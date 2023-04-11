@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class SignUpTest {
     @Test
     public void signUp() {
-        WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
         driver.manage().window().setSize(new Dimension(1230, 730));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
