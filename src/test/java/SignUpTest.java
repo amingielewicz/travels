@@ -65,8 +65,34 @@ public class SignUpTest {
         softAssert.assertTrue(errors.contains("The Last Name field is required."));
         softAssert.assertAll();
 
+    }
+    @Test
+    public void signUpIvalidMail() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().setSize(new Dimension(1230, 730));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.get("http://www.kurs-selenium.pl/demo/");
 
 
+        String lastName = "Kowalski";
+
+        int randomNumber = (int) (Math.random()*1000);
+        String email = "tester" + randomNumber;
+
+        driver.findElements(By.xpath("//li[@id='li_myaccount']")).stream().filter(WebElement::isDisplayed).findFirst().ifPresent(WebElement::click); //to podejście jest lepsze
+        driver.findElements(By.xpath("//a[text() = '  Sign Up']")).get(1).click(); //niż to
+        driver.findElement(By.name("firstname")).sendKeys("Adam");
+        driver.findElement(By.name("lastname")).sendKeys("Kowalski");
+        driver.findElement(By.name("phone")).sendKeys("123456");
+        driver.findElement(By.name("email")).sendKeys(email);
+        driver.findElement(By.name("password")).sendKeys("Kowalski123");
+        driver.findElement(By.name("confirmpassword")).sendKeys("Kowalski123");
+        driver.findElement(By.xpath("//div[@class='form-group']//button")).click();
+
+        List<String> invalidEmailError = driver.findElements(By.xpath("//div[@class='alert alert-danger']//p")).stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+        Assert.assertTrue(invalidEmailError.contains("The Email field must contain a valid email address."));
 
     }
 
