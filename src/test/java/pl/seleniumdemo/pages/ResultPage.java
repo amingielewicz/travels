@@ -20,7 +20,7 @@ public class ResultPage {
         PageFactory.initElements(driver, this);
     }
 
-    public List<String> getHotelNames(){
+    public List<String> getHotelNames() {
         return hotelList.stream()           //zwraca listę z nazwami hoteli
                 .map(e1 -> e1.getAttribute("textContent"))
                 .collect(Collectors.toList());
@@ -30,6 +30,5 @@ public class ResultPage {
     public String getHeadingText() {
         return resultHeading.getText();
     }
-
 
 }

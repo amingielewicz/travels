@@ -10,6 +10,7 @@ import java.time.Duration;
 
 public class BaseTest {
     protected WebDriver driver;
+
     @BeforeMethod
     public void setup() {
         driver = new ChromeDriver();
@@ -17,9 +18,9 @@ public class BaseTest {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.get("http://www.kurs-selenium.pl/demo/");
     }
+
     @AfterMethod
     public void tearDown() {
         driver.quit();
-
     }
 }

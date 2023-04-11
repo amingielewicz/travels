@@ -10,12 +10,12 @@ import java.util.List;
 public class HotelSearchTest extends BaseTest {
 
     @Test
-    public void getInfoTest() {
+    public void searchHotelTest() {
 
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        hotelSearchPage.setCity("London");
+        hotelSearchPage.setCity("Dubai");
         hotelSearchPage.setDates("29/07/2023", "29/08/2023");
-        hotelSearchPage.setTravellers(1,2);
+        hotelSearchPage.setTravellers(1, 2);
         hotelSearchPage.performSearch();
 
         ResultPage resultPages = new ResultPage(driver);
@@ -25,22 +25,20 @@ public class HotelSearchTest extends BaseTest {
         Assert.assertEquals(hotelNames.get(1), "Oasis Beach Tower");
         Assert.assertEquals(hotelNames.get(2), "Rose Rayhaan Rotana");
         Assert.assertEquals(hotelNames.get(3), "Hyatt Regency Perth");
-
-        }
+    }
 
     @Test
     public void searchHotelWithoutNameTest() {
 
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
         hotelSearchPage.setDates("22/04/2023", "30/04/2023");
-        hotelSearchPage.setTravellers(0,1);
+        hotelSearchPage.setTravellers(0, 1);
         hotelSearchPage.performSearch();
 
         ResultPage resultPage = new ResultPage(driver);
 
         Assert.assertTrue(resultPage.resultHeading.isDisplayed());
         Assert.assertEquals(resultPage.getHeadingText(), "No Results Found");
-
     }
 }
 
