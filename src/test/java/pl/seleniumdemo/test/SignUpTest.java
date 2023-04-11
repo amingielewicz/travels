@@ -1,27 +1,19 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
+package pl.seleniumdemo.test;
+
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import pl.seleniumdemo.test.BaseTest;
 
-import java.time.Duration;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
-public class SignUpTest {
+public class SignUpTest extends BaseTest {
 
     @Test
-    public void signUp() {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().setSize(new Dimension(1230, 730));
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get("http://www.kurs-selenium.pl/demo/");
-
+    public void signUpTest() {
 
         String lastName = "Kowalski";
 
@@ -41,13 +33,10 @@ public class SignUpTest {
         Assert.assertTrue(heading.getText().contains(lastName));
         Assert.assertEquals(heading.getText(), "Hi, Adam Kowalski");
 
+
     }
     @Test
-    public void signUpBlankForm(){
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().setSize(new Dimension(1230, 730));
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get("http://www.kurs-selenium.pl/demo/");
+    public void signUpBlankFormTest(){
 
         driver.findElements(By.xpath("//li[@id='li_myaccount']")).stream().filter(WebElement::isDisplayed).findFirst().ifPresent(WebElement::click); //to podejście jest lepsze
         driver.findElements(By.xpath("//a[text() = '  Sign Up']")).get(1).click(); //niż to
@@ -65,14 +54,10 @@ public class SignUpTest {
         softAssert.assertTrue(errors.contains("The Last Name field is required."));
         softAssert.assertAll();
 
+
     }
     @Test
-    public void signUpIvalidMail() {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().setSize(new Dimension(1230, 730));
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get("http://www.kurs-selenium.pl/demo/");
-
+    public void signUpIvalidMailTest() {
 
         String lastName = "Kowalski";
 
@@ -93,6 +78,7 @@ public class SignUpTest {
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
         Assert.assertTrue(invalidEmailError.contains("The Email field must contain a valid email address."));
+
 
     }
 
