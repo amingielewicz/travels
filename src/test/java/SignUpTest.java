@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class SignUpTest {
+
     @Test
     public void signUp() {
         WebDriver driver = new ChromeDriver();
@@ -40,5 +42,33 @@ public class SignUpTest {
         Assert.assertEquals(heading.getText(), "Hi, Adam Kowalski");
 
     }
+    @Test
+    public void signUpBlankForm(){
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().setSize(new Dimension(1230, 730));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.get("http://www.kurs-selenium.pl/demo/");
+
+        driver.findElements(By.xpath("//li[@id='li_myaccount']")).stream().filter(WebElement::isDisplayed).findFirst().ifPresent(WebElement::click); //to podejście jest lepsze
+        driver.findElements(By.xpath("//a[text() = '  Sign Up']")).get(1).click(); //niż to
+        driver.findElement(By.xpath("//div[@class='form-group']//button")).click();
+
+        List<String> errors = driver.findElements(By.xpath("//div[@class='alert alert-danger']//p")).stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(errors.contains("The Email field is required."));
+        softAssert.assertTrue(errors.contains("The Password field is required."));
+        softAssert.assertTrue(errors.contains("The Password field is required."));
+        softAssert.assertTrue(errors.contains("The First name field is required."));
+        softAssert.assertTrue(errors.contains("The Last Name field is required."));
+        softAssert.assertAll();
+
+
+
+
+    }
+
 
 }
