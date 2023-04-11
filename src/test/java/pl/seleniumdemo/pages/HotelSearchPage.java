@@ -6,9 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class HotelSearchPage {
 
     @FindBy(xpath = "//span[text()='Search by Hotel or City Name']")
@@ -38,28 +35,42 @@ public class HotelSearchPage {
     @FindBy(xpath = "//button[text()=' Search']")
     private WebElement searchButton;
 
+    private WebDriver driver;
+
     public HotelSearchPage(WebDriver driver) {
         PageFactory.initElements(driver, this);     //pozwala zainicjalizować pola
+        this.driver = driver; //pole, które znajduje się wewnątrz naszej klasy.
     }
 
     public void setCity(String cityName) {
 
         searchHotelSpan.click();
-        searchHotelInput.sendKeys("Dubai");
-        hotelMatch.click();
+        searchHotelInput.sendKeys(cityName);
+        String xpath = String.format("//span[@class='select2-match' and text()='%s']", cityName);
+        driver.findElement(By.xpath(xpath)).click();
     }
 
-    public void setDates(String checkin, String checkout){
+    public void setDates(String checkin, String checkout) {
         checkinInput.sendKeys(checkin);
         checkoutInput.sendKeys(checkout);
     }
-     public void setTravellers() {
-        travellersInput.click();
-        adultPlusBtn.click();
-        childPlusBtn.click();
-     }
 
-     public void performSearch(){
-        searchButton.click();
-     }
-}
+    public void setTravellers(int adultsToAdd, int childToAdd) {
+        travellersInput.click();
+        addTraveler(adultPlusBtn, adultsToAdd);
+        addTraveler(childPlusBtn, childToAdd);
+    }
+
+    private void addTraveler(WebElement travelerBtn, int numberOfTravelers) {
+        for (int i = 0; i < numberOfTravelers; i++) {
+            travelerBtn.click();
+
+        }
+    }
+
+            public void performSearch() {
+                searchButton.click();
+            }
+        }
+
+
