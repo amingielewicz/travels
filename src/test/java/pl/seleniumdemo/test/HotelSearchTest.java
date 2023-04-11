@@ -13,30 +13,25 @@ public class HotelSearchTest extends BaseTest {
     public void getInfoTest() {
 
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        hotelSearchPage.setCity("London");
-        hotelSearchPage.setDates("29/07/2023", "29/08/2023");
-        hotelSearchPage.setTravellers(1,2);
-        hotelSearchPage.performSearch();
-
-        ResultPage resultPages = new ResultPage(driver);
-        List<String> hotelNames = resultPages.getHotelNames();
+        List<String> hotelNames = hotelSearchPage.setCity("Dubai")
+                .setDates("29/07/2023", "29/08/2023")
+                .setTravellers(1, 2)
+                .performSearch().getHotelNames();
 
         Assert.assertEquals(hotelNames.get(0), "Jumeirah Beach Hotel");
         Assert.assertEquals(hotelNames.get(1), "Oasis Beach Tower");
         Assert.assertEquals(hotelNames.get(2), "Rose Rayhaan Rotana");
         Assert.assertEquals(hotelNames.get(3), "Hyatt Regency Perth");
 
-        }
+    }
 
     @Test
     public void searchHotelWithoutNameTest() {
 
-        HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        hotelSearchPage.setDates("22/04/2023", "30/04/2023");
-        hotelSearchPage.setTravellers(0,1);
-        hotelSearchPage.performSearch();
-
-        ResultPage resultPage = new ResultPage(driver);
+        ResultPage resultPage = new HotelSearchPage(driver)
+                .setDates("22/04/2023", "30/04/2023")
+                .setTravellers(0, 1)
+                .performSearch();
 
         Assert.assertTrue(resultPage.resultHeading.isDisplayed());
         Assert.assertEquals(resultPage.getHeadingText(), "No Results Found");
